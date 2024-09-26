@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {Logar, Logado, Deslogar} = require('./controllers/controller')
+const {Logar, Logado, Deslogar, Redireciona} = require('./controllers/controller')
 const db = require('./database')
 
 const express = require('express')
@@ -16,7 +16,7 @@ app.use(cookieParser())
 
 app.use('/Pages', express.static(__dirname+'/Pages'))
 
-app.get('/', (req, res) => res.sendFile(__dirname+'/Pages/index.html'))
+app.get('/', Redireciona, (req, res) => res.sendFile(__dirname+'/Pages/index.html'))
 app.get('/privado', Logado, (req, res) => res.send('Somente usuários logados podem ver isso!'))
 
 
