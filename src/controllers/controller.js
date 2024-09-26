@@ -65,6 +65,33 @@ async function Logado(req, res, next){
 
 
 
+
+async function Redireciona(req, res, next){
+    // Verifica se tem algum cookie chamado token no navegador, para depois fazer as verificações se é valido.
+    if(! req.cookies || ! req.cookies.Token){
+        return next()
+    }
+    
+    let Auth = req.cookies.Token
+
+    //Verifica se o cookie existe
+    if(typeof(Auth) == 'undefined' || Auth == '' || Auth == null){
+        return next()
+    } else{
+        try{
+            let Token = await jsonwebtoken.verify(Auth, process.env.TOKEN_PASS_GENERATOR)
+            res.redirect('/privado')        
+        } catch(err){
+            return next()
+        }
+    }
+}
+
+
+
+
+
+
 async function Deslogar(res){
     res.clearCookie('Token')
     res.redirect('/')
@@ -72,4 +99,4 @@ async function Deslogar(res){
 
 
 
-module.exports = {Logar, Logado, Deslogar}
+module.exports = {Logar, Logado, Deslogar, Redireciona}
