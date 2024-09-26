@@ -1,0 +1,18 @@
+https://www.freecodecamp.org/portuguese/news/introducao-ao-mongoose-para-mongodb/#:~:text=Embora%20o%20MongoDB%20n%C3%A3o%20possua,meio%20da%20camada%20da%20aplica%C3%A7%C3%A3o.
+https://kinsta.com/pt/blog/banco-de-dados-mongodb/
+https://anaeljonas.medium.com/login-com-node-js-em-5-minutos-8b5598dacda2
+
+
+
+var login = require('./models/login.model')
+var registro = new login({
+	user: 'teste@hot.com',
+	password: '123'
+})
+registro.save()
+.then((x)=>{
+	console.log(x)
+})
+.catch((err)=>{
+	console.log(err)
+})
