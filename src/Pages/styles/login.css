@@ -49,6 +49,12 @@ input{
     padding-right: 8%;
 }
 
+input::placeholder{
+    font-size: 15px;
+    color: rgb(201, 197, 191);
+    align-content: center ;
+}
+
 input:focus{
     outline: 2px solid gray;
     outline-offset: 2px;
