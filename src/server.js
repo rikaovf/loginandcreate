@@ -15,9 +15,11 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 app.use('/Pages', express.static(__dirname+'/Pages'))
+app.use('/js', express.static(__dirname+'/Pages/js'))
+app.use('/css', express.static(__dirname+'/Pages/styles'))
 
 app.get('/', Redireciona, (req, res) => res.sendFile(__dirname+'/Pages/index.html'))
-app.get('/privado', Logado, (req, res) => res.send('Somente usuários logados podem ver isso!'))
+app.get('/privado', Logado, (req, res) => res.sendFile(__dirname+'/Pages/privado.html'))
 
 
 //ROUTES

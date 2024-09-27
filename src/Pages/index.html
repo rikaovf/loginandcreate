@@ -1,43 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- IMPORTANDO REQUISIÇÕES DO AXIOS -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <!-- SCRIPTS PARA CONSUMO DA API -->
+    <script src="http://localhost:3000/js/logar.js"></script>
+    <script src="http://localhost:3000/js/deslogar.js"></script>
+    
+    <link rel="stylesheet" href="http://localhost:3000/css/login.css">
+    
     <title>Sistema de login</title>
 </head>
+
 <body>
     <div id="login">
-        <input id="user" type="email">
-        <input id="password" type="password">
-        <button id="btnLogar" onclick="Logar()">Logar</button>
+        <input id="user" class="btnInput" type="email">
+        <input id="password" class="btnInput" type="password">
+        <button id="btnLogar" class="btnInput" onclick="Logar()">Entrar</button>
     </div>
-
-    <script type="text/javascript">
-        function Logar(){
-            let user = document.getElementById('user').value
-            let password = document.getElementById('password').value
-
-            if(!user || !password){
-                return alert('Digite todos os campos de login!')
-            }
-
-            axios.post('api/users/logar', {user, password})
-            .then(response =>{
-                if (response.data.erro){
-                    return alert(response.data.erro)
-                } else{
-                    window.location.href = '/privado'
-                }
-            })
-            .catch(erro =>{
-                console.log(erro)
-                return alert(erro)
-            })
-        }
-    </script>
 </body>
+
 </html>
