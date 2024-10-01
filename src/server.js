@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {Logar, Logado, Deslogar, Redireciona} = require('./controllers/controller')
+const {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario} = require('./controllers/controller')
 const db = require('./database')
 
 const express = require('express')
@@ -8,28 +8,53 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
+
+
+
 const app = express()
 
+
+
+////////MIDDLEWARES
 app.use(cors())
 app.use(bodyParser.json())
 app.use(cookieParser())
+///////////////////
 
+
+
+////////STATIC PAGES FRONT-END
 app.use('/Pages', express.static(__dirname+'/Pages'))
 app.use('/js', express.static(__dirname+'/Pages/js'))
 app.use('/css', express.static(__dirname+'/Pages/styles'))
+////////////////////
 
+
+
+//////ROUTES
 app.get('/', Redireciona, (req, res) => res.sendFile(__dirname+'/Pages/index.html'))
 app.get('/privado', Logado, (req, res) => res.sendFile(__dirname+'/Pages/privado.html'))
 
-
-//ROUTES
-app.post('/api/users/logar', async(req, res)=>{
-    res.send(await Logar(req.body, res))
+app.get('/api/users/adminlogado', async(req, res)=>{
+    res.send(await AdminLogado(req, res))
 })
 
 app.get('/api/users/deslogar', async(req, res)=>{
     res.send(await Deslogar(res))
 })
+
+app.post('/api/users/logar', async(req, res)=>{
+    res.send(await Logar(req.body, res))
+})
+
+app.post('/api/users/criarusuario', async(req, res)=>{
+    res.send(await CriarUsuario(req.body, res))
+})
+/////////////
+
+
+
+
 
 
 
