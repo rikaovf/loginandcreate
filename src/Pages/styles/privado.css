@@ -17,6 +17,8 @@ body{
 
 #container{
     height: 100%;
+    font-size: 4vh;
+    font-family: "Roboto", sans-serif;
 }
 
 #infologin{
@@ -24,11 +26,10 @@ body{
     flex-direction: column;
     align-items: center;
     height: 100%;
-    width: 35%;
+    width: 25%;
     border: 2px solid #a19494;
     background-color: #c3c3c3;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: larger;
+    font-size: 60%;
 }
 
 #welcometext{    
@@ -38,7 +39,7 @@ body{
     background-color: #a8a8a8;
     width: 100%;
     height: 15%;
-    padding-top: 13%;
+    padding-top: 5vh;
 }
 
 #addUser{
@@ -54,10 +55,100 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 8%;
+    padding-top: 3vh;
     width: 100%;
     height: 10%;
     border: 1px;
     border-style: outset;
     border-color: #fffaf4;
+}
+
+
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,4);
+    opacity: 0.6;
+}
+
+
+.modal .content{
+    font-size: 0.5em;
+    background-color: #D3D3D3;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+p{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#infoUser{
+    margin: auto;
+}
+
+
+.sep{
+    padding: 1.5vh;
+}
+
+
+.niveis{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.3vh;
+    width: 100%;
+}
+
+#btnCriar{
+    padding: 1%;
+    margin-left: 25%;
+}
+
+
+input{
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 3px;
+    border-style: none;
+    height: 3vh;
+}
+
+input::placeholder{
+    font-size: 15px;
+    color: rgb(201, 197, 191);
+    align-content: center ;
+}
+
+input:focus{
+    outline: 2px solid gray;
+    outline-offset: 1px;
+}
+
+
+input[type="range" i] {
+    width: 100%;
+}
+
+
+#btnFecharModal{
+    cursor: pointer;
+    padding: 0.4vw;
+    margin-left: auto;
 }
