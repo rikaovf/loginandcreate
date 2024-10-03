@@ -14,6 +14,10 @@ const cookieParser = require('cookie-parser')
 const app = express()
 
 
+//// ACTIVATE EJS ENGINE
+app.set('view engine', 'ejs')
+app.set('views', __dirname +'/views');
+////////////////////////
 
 ////////MIDDLEWARES
 app.use(cors())
@@ -32,6 +36,9 @@ app.use('/css', express.static(__dirname+'/Pages/styles'))
 
 
 //////ROUTES
+// index page
+app.get('/teste', (req, res)=> res.render('teste'));
+
 app.get('/', Redireciona, (req, res) => res.sendFile(__dirname+'/Pages/index.html'))
 app.get('/privado', Logado, (req, res) => res.sendFile(__dirname+'/Pages/privado.html'))
 

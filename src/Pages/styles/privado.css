@@ -26,10 +26,10 @@ body{
     flex-direction: column;
     align-items: center;
     height: 100%;
-    width: 25%;
+    width: 15%;
     border: 2px solid #a19494;
     background-color: #c3c3c3;
-    font-size: 60%;
+    font-size: 49%;
 }
 
 #welcometext{    
@@ -55,12 +55,19 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 3vh;
+    padding-top: 1vh;
     width: 100%;
-    height: 10%;
+    height: 5%;
     border: 1px;
     border-style: outset;
     border-color: #fffaf4;
+    border-radius: 2px;
+}
+
+.opMenu:hover{
+    border: 1px;
+    border-style:solid;
+    border-color: #94918d;
 }
 
 
