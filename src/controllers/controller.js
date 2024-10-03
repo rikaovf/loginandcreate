@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const jsonwebtoken = require('jsonwebtoken')
 
 const userModel = require('../models/user.model')
-
+const {dispatchErro, dispatchOK} = require('./returns')
 
 
 
@@ -15,7 +15,7 @@ async function Logar(body, res){
     const password= body.password;
 
     if(!user || !password){
-        return {erro: 'Dados insuficientes!'}
+        return dispatchErro('Dados insuficientes!')
     }
 
     let Find = await userModel.find({user: user, password: password})
@@ -23,11 +23,11 @@ async function Logar(body, res){
         return response
     })
     .catch(erro => {
-        return { erro: erro }
+        return dispatchErro(erro)
     })
 
     if( Find == '' || Find.erro ){
-        return {erro: 'E-mail ou senha incorretos.'}
+        return dispatchErro('E-mail ou senha incorretos.')
     }
 
     let Token = await jsonwebtoken.sign({
@@ -46,20 +46,20 @@ async function Logado(req, res, next){
     
     // Verifica se tem algum cookie chamado token no navegador, para depois fazer as verificações se é valido.
     if(! req.cookies || ! req.cookies.Token){
-        return res.send({erro: {login: 'Token inexistente'}})
+        return dispatchErro('Token inexistente')
     }
     
     let Auth = req.cookies.Token
 
     //Verifica se o cookie existe
     if(typeof(Auth) == 'undefined' || Auth == '' || Auth == null){
-        return res.send({erro: {login: 'Não autorizado'}})
+        return dispatchErro('Não autorizado')
     } else{
         try{
             let Token = await jsonwebtoken.verify(Auth, process.env.TOKEN_PASS_GENERATOR)
             next()
         } catch(err){
-            return res.send({erro: {login: 'Não autorizado'}})
+            return dispatchErro('Não autorizado')
         }
     }
 }
@@ -93,27 +93,58 @@ async function Deslogar(res){
 async function AdminLogado(req, res){
     
     if(! req.cookies || ! req.cookies.Token){
-        return res.send({erro: {login: 'Token inexistente'}})
+        return dispatchErro('Token inexistente')
     }
     
     let Auth = req.cookies.Token
 
     //Verifica se o cookie existe
     if(typeof(Auth) == 'undefined' || Auth == '' || Auth == null){
-        return res.send({erro: {login: 'Não autorizado'}})
+        return dispatchErro('Não autorizado')
     } else{
         try{
             let Token = await jsonwebtoken.verify(Auth, process.env.TOKEN_PASS_GENERATOR)
             return {user: Token.user, userMaster: Token.level == 1}
         } catch(err){
-            return res.send({erro: {login: 'Não autorizado'}})
+            return dispatchErro('Não autorizado')
         }
     }
 }
 
 async function CriarUsuario(body, res){
-    res.clearCookie('Token')
-    res.redirect('/')
+    
+    if(!body){
+        return dispatchErro('Corpo da requisição vazio!')
+    } else{
+        const Find = await userModel.find({user: body.user})
+        
+        try{
+            if(! Find == '' || ! Find.erro){
+                if(Find.length == 0){
+                    const userCreate = new userModel({
+                        user: body.user,
+                        password: body.password,
+                        level: body.level
+                    })
+
+                    userCreate.save()
+                    .then(()=>{
+                        return dispatchOK('Usuário criado com sucesso!')
+                    })
+                    .catch((err)=>{
+                        return dispatchErro(err)
+                    })
+                } else{
+                    return dispatchErro('Este nome de usuário ja encontra-se utilizado!')    
+                }
+             } else{
+                return dispatchErro('Erro ao executar consulta ao banco de dados!')
+            }
+        } catch(err){
+            console.log(err)
+            return dispatchErro(err)
+        }
+    }
 }
 
 

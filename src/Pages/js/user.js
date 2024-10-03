@@ -86,16 +86,19 @@ function criarUsuario(){
         level: userLevel.value
     }
     
-    /*axios.post('api/users/criarusuario', {user, password})
+    axios.post('api/users/criarusuario', data)
     .then(response =>{
+        console.log(response)
         if (response.data.erro){
             return alert(response.data.erro)
         } else{
-            window.location.href = '/privado'
+            return alert(response.data.mensagem)
         }
+
+        switchModal();
     }) 
     .catch(erro =>{
         console.log(erro)
         return alert(erro)
-    })*/
+    })
 }
