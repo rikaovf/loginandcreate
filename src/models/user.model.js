@@ -5,5 +5,5 @@ var userSchema = new mongoose.Schema({
     password: String,
     level: Number
 })
-
-module.exports = mongoose.model('User', userSchema)
+//                              Schema name   Schema obj  Collection name
+module.exports = mongoose.model('User'      , userSchema, 'users'        )
