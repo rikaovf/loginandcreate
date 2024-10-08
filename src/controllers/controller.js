@@ -152,5 +152,17 @@ async function ListarUsuarios(){
     }
 }
 
+async function deleteUsuario(body, res){
+    const id = body._id
 
-module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios}
+    const Find = await userModel.find({_id: id})
+
+    if(! Find || Find.length == 0){
+        return dispatchErro('Não foram encontrados nenhum registro de usuário.')
+    } else{
+        console.log(Find)
+        return dispatchOK(Find[0].user)
+    }
+}
+
+module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios, deleteUsuario}

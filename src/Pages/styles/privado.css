@@ -75,7 +75,6 @@ body{
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,4);
-    //opacity: 0.95;
 }
 
 
@@ -160,4 +159,20 @@ input[type="range" i] {
     height: 100%;
     margin: auto;
     font-size: 40%;
+    cursor: pointer;
+}
+
+.tdAE{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.altexc{
+    padding: 5%;
+    vertical-align: sub;
+}
+
+.altexc:hover{
+    border: 1px solid rgb(85, 85, 85);
 }

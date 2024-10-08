@@ -106,13 +106,36 @@ function listUsers(){
 
                 let tdu = document.createElement('td')
                 let tdl = document.createElement('td')
-                                
+                let tds = document.createElement('td')
+                let tdAE = document.createElement('td')
+                let tda = document.createElement('i')
+                let tde = document.createElement('i')
+
                 tdu.innerText = response.data[e].user
                 tdl.innerText = ['', 'Supervisor', 'Intermediário', 'Básico'][parseInt(response.data[e].level)]
+                
+                
+                tda.classList.add('bi', 'bi-pencil', 'altexc')
+                tde.classList.add('bi', 'bi-trash', 'altexc')
+                tda.dataset.id = response.data[e]._id
+                tde.dataset.id = response.data[e]._id
+                
+                tda.addEventListener('click', (e)=>{
+                    alteraUsuario(e)
+                })
+                
+                tde.addEventListener('click', (e)=>{
+                    excluiUsuario(e)
+                })
+                                
+                tdAE.insertAdjacentElement('beforeend', tda)
+                tdAE.insertAdjacentElement('beforeend', tde)
 
                 tbody.insertAdjacentElement('beforeend', tr)
                 tr.insertAdjacentElement('beforeend', tdu)
                 tr.insertAdjacentElement('beforeend', tdl)
+                tr.insertAdjacentElement('beforeend', tds)
+                tr.insertAdjacentElement('beforeend', tdAE)
             }
         }
     }) 
@@ -124,13 +147,13 @@ function listUsers(){
     return    
 }
 
-
-
 function criaHeaderTable(el){
     let thead = document.createElement('thead')
     let tr = document.createElement('tr')
     let thu = document.createElement('th')
     let thl = document.createElement('th')
+    let tha = document.createElement('th')
+    let thd = document.createElement('th')
 
     tr.classList.add('text-center')
 
@@ -139,7 +162,68 @@ function criaHeaderTable(el){
 
     thu.innerText = 'Usuário'
     thl.innerText = 'Nível'
+    /*tha.innerText = 'Alterar'
+    thd.innerHTML = 'Excluir'*/
 
     tr.insertAdjacentElement('beforeend', thu)
     tr.insertAdjacentElement('beforeend', thl)
+    tr.insertAdjacentElement('beforeend', tha)
+    tr.insertAdjacentElement('beforeend', thd)
+}
+
+async function alteraUsuario(evt){
+    /*const userClicked = evt.target.dataset.id;
+
+    const data = {
+        _id: userClicked,
+    }
+    
+    axios.post('api/users/criarusuario', data)
+    .then(response =>{
+        if (response.data.erro){
+            alert(response.data.erro)
+        } else{
+            alert(response.data.mensagem)
+            
+            userName.value = ''
+            userPass.value = ''
+            usercPass.value = ''
+
+            switchModal();
+        }
+
+        return 
+    }) 
+    .catch(erro =>{
+        console.log(erro)
+        return alert(erro)
+    })*/
+}
+
+async function excluiUsuario(evt){
+    const userClicked = evt.target.dataset.id;
+
+    const data = {
+        _id: userClicked,
+    }
+    
+    msgSimNao('Deseja realmente excluir este usuário?', 'Exclusão de usuário')
+    .then((res)=>{
+        if(res == 'Ok'){
+            axios.post('api/users/deleteusuario', data)
+            .then(response =>{
+                if (response.data.erro){
+                    return alert(response.data.erro)
+                } else{
+                    evt.target.parentNode.parentNode.parentNode.removeChild(evt.target.parentNode.parentNode)
+                    return alert(response.data.mensagem)
+                }
+            }) 
+            .catch(erro =>{
+                return alert(erro)
+            })
+        }
+        return res
+    })
+    .catch(err=>{return console.log(err)})
 }
