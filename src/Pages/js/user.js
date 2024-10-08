@@ -213,10 +213,10 @@ async function excluiUsuario(evt){
             axios.post('api/users/deleteusuario', data)
             .then(response =>{
                 if (response.data.erro){
-                    return alert(response.data.erro)
+                    return errorMsg(response.data.erro)
                 } else{
                     evt.target.parentNode.parentNode.parentNode.removeChild(evt.target.parentNode.parentNode)
-                    return alert(response.data.mensagem)
+                    return errorMsg(response.data.mensagem)
                 }
             }) 
             .catch(erro =>{

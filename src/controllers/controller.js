@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const { promisify } = require('util');
+
 const mongoose = require('mongoose')
 const jsonwebtoken = require('jsonwebtoken')
 
@@ -154,14 +156,18 @@ async function ListarUsuarios(){
 
 async function deleteUsuario(body, res){
     const id = body._id
-
-    const Find = await userModel.find({_id: id})
-
-    if(! Find || Find.length == 0){
-        return dispatchErro('Não foram encontrados nenhum registro de usuário.')
+    const findAndDelete = promisify(userModel.findByIdAndDelete)
+    
+    let Deleted = findAndDelete(id)
+    .then((docs)=>{
+        return docs
+    })
+    .catch((err) => {return err})
+    
+    if(! Deleted || Deleted.length == 0){
+        return dispatchErro('Não foram encontrados registros deste usuário!')
     } else{
-        console.log(Find)
-        return dispatchOK(Find[0].user)
+        return dispatchOK(`${Docs[0].user} deletado com sucesso!`)
     }
 }
 
