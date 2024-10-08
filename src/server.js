@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario} = require('./controllers/controller')
+const {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios} = require('./controllers/controller')
 const db = require('./database')
 
 const express = require('express')
@@ -48,6 +48,10 @@ app.get('/api/users/adminlogado', async(req, res)=>{
 
 app.get('/api/users/deslogar', async(req, res)=>{
     res.send(await Deslogar(res))
+})
+
+app.get('/api/users/listusers', async(req, res)=>{
+    res.send(await ListarUsuarios())
 })
 
 app.post('/api/users/logar', async(req, res)=>{

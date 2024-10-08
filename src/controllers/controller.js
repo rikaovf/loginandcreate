@@ -127,13 +127,7 @@ async function CriarUsuario(body, res){
                         level: body.level
                     })
 
-                    userCreate.save()
-                    .then(()=>{
-                        return dispatchOK('Usuário criado com sucesso!')
-                    })
-                    .catch((err)=>{
-                        return dispatchErro(err)
-                    })
+                    return await userCreate.save() != undefined ? dispatchOK('Usuário criado com sucesso!') : dispatchErro('Erro ao criar usuário!')
                 } else{
                     return dispatchErro('Este nome de usuário ja encontra-se utilizado!')    
                 }
@@ -147,5 +141,16 @@ async function CriarUsuario(body, res){
     }
 }
 
+async function ListarUsuarios(){
+    
+    const Find = await userModel.find()
 
-module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario}
+    if(! Find || Find.length == 0){
+        return dispatchErro('Não foram encontrados nenhum registro de usuário.')
+    } else{
+        return Find
+    }
+}
+
+
+module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios}

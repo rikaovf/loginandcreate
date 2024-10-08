@@ -16,6 +16,8 @@ body{
 }
 
 #container{
+    display: flex;
+    flex-direction: row;
     height: 100%;
     font-size: 4vh;
     font-family: "Roboto", sans-serif;
@@ -29,7 +31,7 @@ body{
     width: 15%;
     border: 2px solid #a19494;
     background-color: #c3c3c3;
-    font-size: 49%;
+    font-size: 40%;
 }
 
 #welcometext{    
@@ -42,15 +44,6 @@ body{
     padding-top: 5vh;
 }
 
-#addUser{
-    cursor: pointer;
-}
-
-#logout{
-    cursor: pointer;
-}
-
-
 .opMenu{
     display: flex;
     flex-direction: column;
@@ -62,6 +55,7 @@ body{
     border-style: outset;
     border-color: #fffaf4;
     border-radius: 2px;
+    cursor: pointer;
 }
 
 .opMenu:hover{
@@ -81,7 +75,7 @@ body{
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,4);
-    opacity: 0.6;
+    //opacity: 0.95;
 }
 
 
@@ -158,4 +152,12 @@ input[type="range" i] {
     cursor: pointer;
     padding: 0.4vw;
     margin-left: auto;
+}
+
+
+.userList{
+    width: 70%;
+    height: 100%;
+    margin: auto;
+    font-size: 40%;
 }
