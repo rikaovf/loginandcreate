@@ -156,18 +156,20 @@ async function ListarUsuarios(){
 
 async function deleteUsuario(body, res){
     const id = body._id
-    const findAndDelete = promisify(userModel.findByIdAndDelete)
+    //const findAndDelete = promisify(userModel.findByIdAndDelete)
     
-    let Deleted = findAndDelete(id)
-    .then((docs)=>{
+    let Deleted = await userModel.findByIdAndDelete(id)
+    /*.then((docs)=>{
         return docs
     })
-    .catch((err) => {return err})
+    .catch((err) => {return err})*/
     
+    console.log(Deleted)
+
     if(! Deleted || Deleted.length == 0){
         return dispatchErro('Não foram encontrados registros deste usuário!')
     } else{
-        return dispatchOK(`${Docs[0].user} deletado com sucesso!`)
+        return dispatchOK(`${Deleted.user} deletado com sucesso!`)
     }
 }
 

@@ -102,7 +102,7 @@ function listUsers(){
             
             for( var e = 0; e < response.data.length; e++){
                 let tr = document.createElement('tr')
-                tr.classList.add('text-center')
+                tr.classList.add('text-center', 'lineUsers')
 
                 let tdu = document.createElement('td')
                 let tdl = document.createElement('td')

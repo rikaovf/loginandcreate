@@ -155,9 +155,7 @@ input[type="range" i] {
 
 
 .userList{
-    width: 70%;
-    height: 100%;
-    margin: auto;
+    margin-bottom: auto;
     font-size: 40%;
     cursor: pointer;
 }
@@ -175,4 +173,12 @@ input[type="range" i] {
 
 .altexc:hover{
     border: 1px solid rgb(85, 85, 85);
+}
+
+td{
+    align-content: space-evenly; !important
+}
+
+.lineUsers{
+    line-height: 5%;
 }
