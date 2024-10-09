@@ -117,30 +117,31 @@ async function CriarUsuario(body, res){
     
     if(!body){
         return dispatchErro('Corpo da requisição vazio!')
-    } else{
-        const Find = await userModel.find({user: body.user})
-        
-        try{
-            if(! Find == '' || ! Find.erro){
-                if(Find.length == 0){
-                    const userCreate = new userModel({
-                        user: body.user,
-                        password: body.password,
-                        level: body.level
-                    })
-
-                    return await userCreate.save() != undefined ? dispatchOK('Usuário criado com sucesso!') : dispatchErro('Erro ao criar usuário!')
-                } else{
-                    return dispatchErro('Este nome de usuário ja encontra-se utilizado!')    
-                }
-             } else{
-                return dispatchErro('Erro ao executar consulta ao banco de dados!')
-            }
-        } catch(err){
-            console.log(err)
-            return dispatchErro(err)
-        }
     }
+    
+    const Find = await userModel.find({user: body.user})
+    
+    try{
+        if(! Find == '' || ! Find.erro){
+            if(Find.length == 0){
+                const userCreate = new userModel({
+                    user: body.user,
+                    password: body.password,
+                    level: body.level
+                })
+
+                return await userCreate.save() != undefined ? dispatchOK('Usuário criado com sucesso!') : dispatchErro('Erro ao criar usuário!')
+            } else{
+                return dispatchErro('Este nome de usuário ja encontra-se utilizado!')    
+            }
+            } else{
+            return dispatchErro('Erro ao executar consulta ao banco de dados!')
+        }
+    } catch(err){
+        console.log(err)
+        return dispatchErro(err)
+    }
+    
 }
 
 async function ListarUsuarios(){
@@ -154,7 +155,40 @@ async function ListarUsuarios(){
     }
 }
 
+async function alteraUsuario(body, res) {
+    
+    if(!body){
+        return dispatchErro('Corpo da requisição vazio!')
+    }
+
+    const filter = {_id: body._id}
+    const data = {
+        password : body.password,
+        level : body.level
+    }
+    
+    const Update = await userModel.findOneAndUpdate(filter, data)
+    
+    console.log(Update)
+    try{
+        if(! Update == '' || ! Update.erro){
+            if(Update.length == 0){
+                return dispatchOK('Alteração concluída com sucesso!')
+            } else{
+                return dispatchErro('Erro ao executar consulta ao banco de dados!')
+            }
+        }
+    } catch(err){
+        console.log(err)
+        return dispatchErro(err)
+    }
+}
+
 async function deleteUsuario(body, res){
+    if(!body){
+        return dispatchErro('Corpo da requisição vazio!')
+    }
+
     const id = body._id
     //const findAndDelete = promisify(userModel.findByIdAndDelete)
     
@@ -173,4 +207,4 @@ async function deleteUsuario(body, res){
     }
 }
 
-module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios, deleteUsuario}
+module.exports = {Logar, Logado, Deslogar, Redireciona, AdminLogado, CriarUsuario, ListarUsuarios, alteraUsuario, deleteUsuario}

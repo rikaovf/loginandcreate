@@ -1,7 +1,30 @@
-function switchModal(){
+function switchModal(alterar, evt){
+    
+    alterar = typeof(alterar) == undefined ? false : alterar
+    
     const modal = document.querySelector("#createUser")
+    const btnC = document.querySelector("#btnCriar")
     const actualState = modal.style.display
+    
+    if (alterar){
+        const userN = document.querySelector("#user")
+        const nameUserClicked = evt.target.dataset.user;
+        userN.value = nameUserClicked
+        userN.disabled = true
 
+        btnC.innerText = 'Alterar'
+
+        btnC.addEventListener('click', (e)=>{
+            alteraUsuario(evt)
+        }, {once: true})
+    } else{
+        
+        btnC.innerText = 'Criar Usuário'
+        btnC.addEventListener('click', (e)=>{
+            criarUsuario()
+        }, {once: true})
+    }
+    
     if (actualState == 'block'){
         modal.style.display = 'none'
     } else{
@@ -10,6 +33,8 @@ function switchModal(){
 }
 
 function criarUsuario(){
+    console.log('criaUser')
+
     const userName = document.querySelector("#user")
     const userPass = document.querySelector("#pass")
     const usercPass = document.querySelector("#cpass")
@@ -76,12 +101,8 @@ function listUsers(){
     let userList = document.querySelector('#userList')
     
     if(!userList){
-        userList = document.createElement('table')
-        userList.setAttribute('id', 'userList')
-        userList.classList.add('table', 'table-striped', 'table-hover', 'table-sm', 'userList')
-        
-        container.insertAdjacentElement('beforeend', userList)
-        
+        userList = criaElementoDom('table', [['id', 'userList']], ['table', 'table-striped', 'table-hover', 'table-sm', 'userList'], container, 'beforeend');
+                
         criaHeaderTable(userList)
     } else{
         for(var i = userList.childNodes.length - 1; i >= 0; i--){
@@ -97,45 +118,35 @@ function listUsers(){
         if (response.data.erro){
             alert(response.data.erro)
         } else{
-            let tbody = document.createElement('tbody')
-            userList.insertAdjacentElement('beforeend', tbody)
-            
+            let tbody = criaElementoDom('tbody', [], [], userList, 'beforeend');
+                        
             for( var e = 0; e < response.data.length; e++){
-                let tr = document.createElement('tr')
-                tr.classList.add('text-center', 'lineUsers')
+                let tr = criaElementoDom('tr', [], ['text-center', 'lineUsers'], tbody, 'beforeend');
+                
+                let tdu  = criaElementoDom('td', [], [], tr, 'beforeend');
+                let tdl  = criaElementoDom('td', [], [], tr, 'beforeend');
+                let tds  = criaElementoDom('td', [], [], tr, 'beforeend');
+                let tdAE = criaElementoDom('td', [], [], tr, 'beforeend');
 
-                let tdu = document.createElement('td')
-                let tdl = document.createElement('td')
-                let tds = document.createElement('td')
-                let tdAE = document.createElement('td')
-                let tda = document.createElement('i')
-                let tde = document.createElement('i')
-
+                let tda  = criaElementoDom('i', [], ['bi', 'bi-pencil', 'altexc'], tdAE, 'beforeend');
+                let tde  = criaElementoDom('i', [], ['bi', 'bi-trash', 'altexc'], tdAE, 'beforeend');
+                
                 tdu.innerText = response.data[e].user
                 tdl.innerText = ['', 'Supervisor', 'Intermediário', 'Básico'][parseInt(response.data[e].level)]
-                
-                
-                tda.classList.add('bi', 'bi-pencil', 'altexc')
-                tde.classList.add('bi', 'bi-trash', 'altexc')
+
                 tda.dataset.id = response.data[e]._id
+                tda.dataset.user = response.data[e].user
+               
                 tde.dataset.id = response.data[e]._id
-                
+
                 tda.addEventListener('click', (e)=>{
-                    alteraUsuario(e)
+                    switchModal(true, e)
+                    //alteraUsuario(e)
                 })
                 
                 tde.addEventListener('click', (e)=>{
                     excluiUsuario(e)
                 })
-                                
-                tdAE.insertAdjacentElement('beforeend', tda)
-                tdAE.insertAdjacentElement('beforeend', tde)
-
-                tbody.insertAdjacentElement('beforeend', tr)
-                tr.insertAdjacentElement('beforeend', tdu)
-                tr.insertAdjacentElement('beforeend', tdl)
-                tr.insertAdjacentElement('beforeend', tds)
-                tr.insertAdjacentElement('beforeend', tdAE)
             }
         }
     }) 
@@ -148,56 +159,60 @@ function listUsers(){
 }
 
 function criaHeaderTable(el){
-    let thead = document.createElement('thead')
-    let tr = document.createElement('tr')
-    let thu = document.createElement('th')
-    let thl = document.createElement('th')
-    let tha = document.createElement('th')
-    let thd = document.createElement('th')
-
-    tr.classList.add('text-center')
-
-    el.insertAdjacentElement('beforeend', thead)
-    thead.insertAdjacentElement('beforeend', tr)
+    let thead = criaElementoDom('thead', [], [], el, 'beforeend')
+    let tr  = criaElementoDom('tr', [], ['text-center'], thead, 'beforeend')
+    let thu = criaElementoDom('th', [], [], tr, 'beforeend')
+    let thl = criaElementoDom('th', [], [], tr, 'beforeend')
+    let tha = criaElementoDom('th', [], [], tr, 'beforeend')
+    let thd = criaElementoDom('th', [], [], tr, 'beforeend')
 
     thu.innerText = 'Usuário'
     thl.innerText = 'Nível'
-    /*tha.innerText = 'Alterar'
-    thd.innerHTML = 'Excluir'*/
-
-    tr.insertAdjacentElement('beforeend', thu)
-    tr.insertAdjacentElement('beforeend', thl)
-    tr.insertAdjacentElement('beforeend', tha)
-    tr.insertAdjacentElement('beforeend', thd)
 }
 
 async function alteraUsuario(evt){
-    /*const userClicked = evt.target.dataset.id;
-
+    console.log('alterauser')
+    const userClicked = evt.target.dataset.id;
+    
     const data = {
         _id: userClicked,
     }
     
-    axios.post('api/users/criarusuario', data)
+    const userP = document.querySelector("#pass")
+    const usercP = document.querySelector("#cpass")
+    const userL = document.querySelector("#nivelAuth")
+
+    if(userP.value.length > 0 || usercP.value.length > 0){
+        if(userP.value === usercP.value && userP.value.length >= 5){
+            data.password = userP.value
+        } else {
+            return errorMsg('Para alterar senha, o campo senha e confirmação devem coincidir e conter mais que 5 caraceteres. Caso não deseje alterar a senha,' +
+                            ' mantenha os campos senha/confirmação em branco!')
+        }
+    }
+
+    data.level = userL.value
+
+    console.log(data)
+    
+    axios.post('api/users/alterausuario', data)
     .then(response =>{
         if (response.data.erro){
-            alert(response.data.erro)
+            return errorMsg(response.data.erro)
         } else{
-            alert(response.data.mensagem)
-            
-            userName.value = ''
-            userPass.value = ''
-            usercPass.value = ''
-
-            switchModal();
+            return errorMsg(response.data.mensagem)
         }
-
-        return 
     }) 
     .catch(erro =>{
-        console.log(erro)
         return alert(erro)
-    })*/
+    })
+    
+    userN = ''
+    userP.value = ''
+    usercP.value = ''
+
+    userN.disabled = false
+    switchModal()
 }
 
 async function excluiUsuario(evt){
