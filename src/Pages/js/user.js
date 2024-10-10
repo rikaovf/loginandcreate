@@ -4,25 +4,35 @@ function switchModal(alterar, evt){
     
     const modal = document.querySelector("#createUser")
     const btnC = document.querySelector("#btnCriar")
+    const userN = document.querySelector("#user")
     const actualState = modal.style.display
     
+    // Removi o remove event listener, e o add event listener, pois ele não funciona corretamente ao excluir os eventos
+    // já cadastrados. Ele acumula os eventos cada vez que ativa o switchmodal. substituí pelo  btnC.onclick = ()=>{}
+    // que sobreescreve a função cada vez que é chamada para executar a sua rotina.
+    /*btnC.removeEventListener('click', alteraUsuario)
+    btnC.removeEventListener('click', criarUsuario)*/
+
     if (alterar){
-        const userN = document.querySelector("#user")
         const nameUserClicked = evt.target.dataset.user;
         userN.value = nameUserClicked
         userN.disabled = true
 
         btnC.innerText = 'Alterar'
 
-        btnC.addEventListener('click', (e)=>{
+        btnC.onclick = ()=>{alteraUsuario(evt)}
+        /*btnC.addEventListener('click', (e)=>{
             alteraUsuario(evt)
-        }, {once: true})
+        }, {once: true})*/
     } else{
-        
+        userN.value = ''
+        userN.disabled = false
+
         btnC.innerText = 'Criar Usuário'
-        btnC.addEventListener('click', (e)=>{
+        btnC.onclick = ()=>{criarUsuario()}
+        /*btnC.addEventListener('click', (e)=>{
             criarUsuario()
-        }, {once: true})
+        }, {once: true})*/
     }
     
     if (actualState == 'block'){
@@ -33,8 +43,6 @@ function switchModal(alterar, evt){
 }
 
 function criarUsuario(){
-    console.log('criaUser')
-
     const userName = document.querySelector("#user")
     const userPass = document.querySelector("#pass")
     const usercPass = document.querySelector("#cpass")
@@ -171,7 +179,6 @@ function criaHeaderTable(el){
 }
 
 async function alteraUsuario(evt){
-    console.log('alterauser')
     const userClicked = evt.target.dataset.id;
     
     const data = {
@@ -193,13 +200,12 @@ async function alteraUsuario(evt){
 
     data.level = userL.value
 
-    console.log(data)
-    
     axios.post('api/users/alterausuario', data)
     .then(response =>{
         if (response.data.erro){
             return errorMsg(response.data.erro)
         } else{
+            evt.target.parentElement.parentElement.childNodes[1].innerText = ['', 'Supervisor', 'Intermediário', 'Básico'][parseInt(userL.value)]
             return errorMsg(response.data.mensagem)
         }
     }) 

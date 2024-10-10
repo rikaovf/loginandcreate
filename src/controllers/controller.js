@@ -168,11 +168,10 @@ async function alteraUsuario(body, res) {
     }
     
     const Update = await userModel.findOneAndUpdate(filter, data)
-    
-    console.log(Update)
+
     try{
         if(! Update == '' || ! Update.erro){
-            if(Update.length == 0){
+            if(Update._id){
                 return dispatchOK('Alteração concluída com sucesso!')
             } else{
                 return dispatchErro('Erro ao executar consulta ao banco de dados!')
