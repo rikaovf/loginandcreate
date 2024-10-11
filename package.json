@@ -1,11 +1,12 @@
 {
-  "name": "consulta-boletos-day-pharma",
+  "name": "login-create",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "nodemon src/server.js"
   },
+  "bin": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -8,11 +8,18 @@ function errorMsg(erro, titulo, trava){
         var titErro = document.getElementById('titErro');
         var msgErro = document.getElementById('msgErro');
 
-        if(typeof(titulo) != 'undefined'){
+        titErro.innerText = typeof(titulo) != 'undefined' ? titulo : 'Erro'
+        /*if(typeof(titulo) != 'undefined'){
             titErro.innerText = titulo;
-        }
+        }*/
 
-        msgErro.innerText = erro;
+        if(typeof(erro) == 'object'){
+            console.log(erro)
+            msgErro.innerText = 'Erro, confira no console do navegador!';
+        } else{
+            msgErro.innerText = erro;
+        }
+        
         dlgErro.style.display = 'block';
     } else{
         dlgErro = criaElementoDom('dialog', [['id', 'dlgErro']], ['dlgErro'], bodyElm, 'afterbegin');

@@ -49,11 +49,11 @@ function criarUsuario(){
     const userLevel = document.querySelector("#nivelAuth")
     
     if(!userName.value && !userPass.value && !usercPass.value){
-        alert("Um ou mais campos incompletos, favor preencher todos os campos!")
+        errorMsg("Um ou mais campos incompletos, favor preencher todos os campos!")
         
         return
     } else if(userName.value.length > 30){
-        alert("Campo de usuário excede o valor máximo de 30 caracteres!")
+        errorMsg("Campo de usuário excede o valor máximo de 30 caracteres!")
         userName.value = ''
         
         return
@@ -62,7 +62,7 @@ function criarUsuario(){
     if(userPass.value.length == 0 || userPass.value.length < 5){
         userPass.value = ''
         usercPass.value = ''
-        alert('Campo senha vazio, ou menor que o esperado (5 caracteres)')
+        errorMsg('Campo senha vazio, ou menor que o esperado (5 caracteres)')
         return
     }
     
@@ -70,7 +70,7 @@ function criarUsuario(){
         userPass.value = ''
         usercPass.value = ''
 
-       alert("Senhas devem concidir, confira e digite novamente!") 
+       errorMsg("Senhas devem concidir, confira e digite novamente!") 
        return
     }
 
@@ -84,9 +84,9 @@ function criarUsuario(){
     axios.post('api/users/criarusuario', data)
     .then(response =>{
         if (response.data.erro){
-            alert(response.data.erro)
+            errorMsg(response.data.erro)
         } else{
-            alert(response.data.mensagem)
+            errorMsg(response.data.mensagem)
             
             userName.value = ''
             userPass.value = ''
@@ -98,8 +98,7 @@ function criarUsuario(){
         return 
     }) 
     .catch(erro =>{
-        console.log(erro)
-        return alert(erro)
+        return errorMsg(erro)
     })
 }
 
@@ -124,7 +123,7 @@ function listUsers(){
     axios('api/users/listusers')
     .then(response =>{
         if (response.data.erro){
-            alert(response.data.erro)
+            errorMsg(response.data.erro)
         } else{
             let tbody = criaElementoDom('tbody', [], [], userList, 'beforeend');
                         
@@ -159,8 +158,7 @@ function listUsers(){
         }
     }) 
     .catch(erro =>{
-        console.log(erro)
-        alert(erro)
+        errorMsg(erro)
     })
 
     return    
@@ -210,7 +208,7 @@ async function alteraUsuario(evt){
         }
     }) 
     .catch(erro =>{
-        return alert(erro)
+        return errorMsg(erro)
     })
     
     userN = ''
@@ -241,7 +239,7 @@ async function excluiUsuario(evt){
                 }
             }) 
             .catch(erro =>{
-                return alert(erro)
+                return errorMsg(erro)
             })
         }
         return res

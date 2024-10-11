@@ -69,6 +69,18 @@ app.post('/api/users/alterausuario', async(req, res)=>{
 app.post('/api/users/deleteusuario', async(req, res)=>{
     res.send(await deleteUsuario(req.body, res))
 })
+
+
+////////// teste para recuperar ip do cliente
+/*app.get('/api/users/teste', async(req, res)=>{
+    var remoteIp = (req.headers['x-forwarded-for'] || '').split(',').pop() || // Recupera o IP de origem, caso a fonte esteja utilizando proxy
+                 req.connection.remoteAddress || // Recupera o endereço remoto da chamada
+                 req.socket.remoteAddress || // Recupera o endereço através do socket TCP
+                 req.connection.socket.remoteAddress // Recupera o endereço através do socket da conexão
+    
+    res.send(remoteIp)
+})*/
+
 /////////////
 
 
